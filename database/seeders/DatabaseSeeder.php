@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Book;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +13,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Create admin user
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
         ]);
+
+        // Create regular users
+        User::factory(5)->create();
+        
+        // Create featured books
+        Book::factory(4)->featured()->create();
+        
+        // Create regular books
+        Book::factory(20)->create();
+        
+        // Create some out-of-stock books
+        Book::factory(3)->outOfStock()->create();
     }
 }

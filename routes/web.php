@@ -2,10 +2,28 @@
 
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ShopController;
 
 Route::get('/', function () {
     return view('store.home');
 })->name('home');
+
+// Shop routes
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
+
+// Cart routes
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+
+// Checkout routes - requires authentication
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

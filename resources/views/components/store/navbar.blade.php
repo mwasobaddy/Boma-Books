@@ -18,10 +18,10 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 ml-10 sm:flex">
-                    <a href="{{ route('home') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400 transition duration-150 ease-in-out">
+                    <a href="{{ route('home') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('home') ? 'border-orange-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
                         Home
                     </a>
-                    <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400 transition duration-150 ease-in-out">
+                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('shop.index') || request()->routeIs('shop.show') ? 'border-orange-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
                         Shop
                     </a>
                     <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400 transition duration-150 ease-in-out">
@@ -33,8 +33,25 @@
                 </div>
             </div>
 
-            <!-- Auth Links -->
+            <!-- Cart and Auth Links -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
+                <!-- Cart Icon -->
+                <a href="{{ route('cart.index') }}" class="relative p-2 mr-4 text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500 transition duration-150 ease-in-out group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    @php
+                        $cart = session('cart', []);
+                        $cartCount = count($cart);
+                    @endphp
+                    @if($cartCount > 0)
+                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-orange-600 rounded-full">{{ $cartCount }}</span>
+                    @endif
+                    <span class="hidden group-hover:block absolute top-10 right-0 bg-white dark:bg-gray-700 rounded-md shadow-lg text-sm py-1 px-2 whitespace-nowrap">
+                        View Cart
+                    </span>
+                </a>
+                
                 @auth
                     <!-- User Dropdown -->
                     <div class="relative ml-3">
@@ -84,10 +101,20 @@
     <!-- Mobile menu, show/hide based on menu state. -->
     <div class="hidden sm:hidden" id="mobile-menu">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="{{ route('home') }}" class="block pl-3 pr-4 py-2 border-l-4 border-orange-500 text-base font-medium text-orange-700 bg-orange-50 dark:bg-gray-700 dark:text-orange-300 dark:border-orange-400">Home</a>
-            <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Shop</a>
-            <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Categories</a>
-            <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Contact</a>
+            <a href="{{ route('home') }}" class="block pl-3 pr-4 py-2 border-l-4 {{ request()->routeIs('home') ? 'border-orange-500 text-orange-700 bg-orange-50 dark:bg-gray-700 dark:text-orange-300 dark:border-orange-400' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white' }}">Home</a>
+            <a href="{{ route('shop.index') }}" class="block pl-3 pr-4 py-2 border-l-4 {{ request()->routeIs('shop.index') || request()->routeIs('shop.show') ? 'border-orange-500 text-orange-700 bg-orange-50 dark:bg-gray-700 dark:text-orange-300 dark:border-orange-400' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white' }}">Shop</a>
+            <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Categories</a>
+            <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Contact</a>
+            <a href="{{ route('cart.index') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">
+                Cart
+                @php
+                    $cart = session('cart', []);
+                    $cartCount = count($cart);
+                @endphp
+                @if($cartCount > 0)
+                    <span class="inline-flex items-center justify-center ml-2 px-2 py-0.5 text-xs font-bold leading-none text-white bg-orange-600 rounded-full">{{ $cartCount }}</span>
+                @endif
+            </a>
         </div>
         
         @auth
