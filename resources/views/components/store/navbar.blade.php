@@ -24,9 +24,27 @@
                     <a href="{{ route('shop.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('shop.index') || request()->routeIs('shop.show') ? 'border-orange-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
                         Shop
                     </a>
-                    <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400 transition duration-150 ease-in-out">
-                        Categories
-                    </a>
+                    
+                    <!-- Categories Dropdown -->
+                    <div class="relative group">
+                        <button class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('categories.*') ? 'border-orange-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
+                            Categories
+                            <svg class="ml-1 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div class="absolute z-10 hidden group-hover:block mt-1 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5" id="categories-menu">
+                            <a href="{{ route('categories.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                All Categories
+                            </a>
+                            <div class="border-t border-gray-200 dark:border-gray-700"></div>
+                            <div class="max-h-60 overflow-y-auto py-1" id="categories-dropdown">
+                                <!-- Categories will be loaded here via JavaScript -->
+                                <div class="text-center py-2 text-sm text-gray-500 dark:text-gray-400">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400 transition duration-150 ease-in-out">
                         Contact
                     </a>
@@ -103,7 +121,26 @@
         <div class="pt-2 pb-3 space-y-1">
             <a href="{{ route('home') }}" class="block pl-3 pr-4 py-2 border-l-4 {{ request()->routeIs('home') ? 'border-orange-500 text-orange-700 bg-orange-50 dark:bg-gray-700 dark:text-orange-300 dark:border-orange-400' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white' }}">Home</a>
             <a href="{{ route('shop.index') }}" class="block pl-3 pr-4 py-2 border-l-4 {{ request()->routeIs('shop.index') || request()->routeIs('shop.show') ? 'border-orange-500 text-orange-700 bg-orange-50 dark:bg-gray-700 dark:text-orange-300 dark:border-orange-400' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white' }}">Shop</a>
-            <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Categories</a>
+            
+            <!-- Mobile Categories Menu -->
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between pl-3 pr-4 py-2 border-l-4 {{ request()->routeIs('categories.*') ? 'border-orange-500 text-orange-700 bg-orange-50 dark:bg-gray-700 dark:text-orange-300 dark:border-orange-400' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white' }}">
+                    <span>Categories</span>
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" :class="{ 'transform rotate-180': open }">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <div class="pl-5 pr-3" x-show="open" style="display: none;" id="mobile-categories-menu">
+                    <a href="{{ route('categories.index') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">
+                        All Categories
+                    </a>
+                    <div id="mobile-categories-list" class="max-h-60 overflow-y-auto">
+                        <!-- Categories will be loaded here via JavaScript -->
+                        <div class="text-center py-2 text-sm text-gray-500 dark:text-gray-400">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            
             <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">Contact</a>
             <a href="{{ route('cart.index') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">
                 Cart
@@ -179,6 +216,64 @@ document.addEventListener('DOMContentLoaded', function() {
             const expanded = this.getAttribute('aria-expanded') === 'true';
             this.setAttribute('aria-expanded', !expanded);
         });
+    }
+    
+    // Mobile categories menu (for Alpine.js)
+    document.querySelectorAll('[x-data]').forEach(function(el) {
+        if (!window.Alpine) {
+            // Simple toggle functionality if Alpine.js is not available
+            const button = el.querySelector('button');
+            const content = button.nextElementSibling;
+            
+            button.addEventListener('click', function() {
+                const isOpen = content.style.display !== 'none';
+                content.style.display = isOpen ? 'none' : 'block';
+                
+                // Rotate arrow
+                const svg = button.querySelector('svg');
+                svg.style.transform = isOpen ? '' : 'rotate(180deg)';
+            });
+        }
+    });
+    
+    // Load categories for dropdown
+    loadCategories();
+    
+    function loadCategories() {
+        fetch('{{ route("api.categories") }}')
+            .then(response => response.json())
+            .then(categories => {
+                const desktopDropdown = document.getElementById('categories-dropdown');
+                const mobileDropdown = document.getElementById('mobile-categories-list');
+                
+                if (desktopDropdown) {
+                    desktopDropdown.innerHTML = '';
+                    categories.forEach(category => {
+                        const link = document.createElement('a');
+                        link.href = `/categories/${category.slug}`;
+                        link.className = 'flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700';
+                        link.innerHTML = `
+                            ${category.name}
+                            <span class="text-xs text-gray-500 dark:text-gray-400">${category.books_count}</span>
+                        `;
+                        desktopDropdown.appendChild(link);
+                    });
+                }
+                
+                if (mobileDropdown) {
+                    mobileDropdown.innerHTML = '';
+                    categories.forEach(category => {
+                        const link = document.createElement('a');
+                        link.href = `/categories/${category.slug}`;
+                        link.className = 'block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white';
+                        link.textContent = category.name;
+                        mobileDropdown.appendChild(link);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+            });
     }
 });
 </script>
