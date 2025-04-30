@@ -64,3 +64,41 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom background patterns */
+@layer utilities {
+    .pattern-dots {
+        background-image: radial-gradient(currentColor 1px, transparent 1px);
+        background-size: calc(10 * 1px) calc(10 * 1px);
+    }
+
+    .pattern-size-4 {
+        background-size: 8px 8px;
+    }
+
+    .pattern-bg-white {
+        background-color: #ffffff;
+    }
+
+    .pattern-gray-300 {
+        color: #d1d5db;
+    }
+
+    .dark .dark\:pattern-gray-700 {
+        color: #374151;
+    }
+
+    .dark .dark\:pattern-bg-gray-900 {
+        background-color: #111827;
+    }
+
+    /* Fix for book card images */
+    .pb-2\/3 {
+        padding-bottom: 66.666667%;
+        position: relative;
+    }
+}
