@@ -16,7 +16,8 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
-        $categories = ['Fiction', 'Non-Fiction', 'Science Fiction', 'Mystery', 'Fantasy', 'Biography', 'History', 'Self-Help', 'Business', 'Romance', 'Thriller', 'Horror'];
+        // Get a random category ID from the database
+        $categoryId = \App\Models\Category::inRandomOrder()->value('id');
         
         return [
             'title' => $this->faker->catchPhrase(),
@@ -25,7 +26,7 @@ class BookFactory extends Factory
             'description' => $this->faker->paragraphs(3, true),
             'price' => $this->faker->randomFloat(2, 4.99, 49.99),
             'cover_image' => 'https://source.unsplash.com/random/300x450?book',
-            'category' => $this->faker->randomElement($categories),
+            'category_id' => $categoryId,
             'stock' => $this->faker->numberBetween(0, 100),
             'is_featured' => $this->faker->boolean(20), // 20% chance of being featured
             'is_published' => $this->faker->boolean(90), // 90% chance of being published

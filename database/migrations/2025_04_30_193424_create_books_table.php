@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->string('cover_image')->nullable();
-            $table->string('category');
             $table->integer('stock')->default(0);
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_published')->default(true);

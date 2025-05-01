@@ -108,7 +108,7 @@
                             <p class="text-gray-600 dark:text-gray-400">Try adjusting your filters or check back later for new releases.</p>
                         </div>
                     @else
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                             @foreach($books as $book)
                                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden flex flex-col">
                                     <a href="{{ route('shop.show', $book->id) }}" class="block">
