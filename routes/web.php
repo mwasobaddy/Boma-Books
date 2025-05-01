@@ -4,20 +4,15 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
-use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('store.home');
 })->name('home');
 
-// Shop routes
+// Shop routes (unified with category)
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
-
-// Category routes
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
-Route::get('/api/categories', [CategoryController::class, 'all'])->name('api.categories');
+Route::get('/categories/{category}', [ShopController::class, 'index'])->name('categories.show');
 
 // Cart routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

@@ -3,38 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {
     /**
-     * Display a listing of the books.
+     * Display a listing of the books, optionally filtered by category.
      */
-    public function index(Request $request)
+    public function index(Request $request, Category $category = null)
     {
-        $query = Book::published();
+        // Load all active categories for sidebar/filter
+        $categories = Category::active()->withCount('books')->get();
 
-        // Filter by category if provided
-        if ($request->has('category')) {
-            $query->where('category', $request->category);
+        // Determine if filtering by category (by slug)
+        $categorySlug = $request->route('category');
+        $selectedCategory = null;
+        $query = Book::published();
+        if ($categorySlug) {
+            $selectedCategory = Category::where('slug', $categorySlug)->firstOrFail();
+            $query->where('category_id', $selectedCategory->id);
         }
 
-        // Sort by different fields
+        // Sorting
         $sortField = $request->input('sort', 'created_at');
         $sortDirection = $request->input('direction', 'desc');
-        
         $allowedSortFields = ['title', 'price', 'author', 'created_at'];
-        
-        if (in_array($sortField, $allowedSortFields)) {
-            $query->orderBy($sortField, $sortDirection === 'asc' ? 'asc' : 'desc');
+        if (!in_array($sortField, $allowedSortFields)) {
+            $sortField = 'created_at';
         }
+        if (!in_array($sortDirection, ['asc', 'desc'])) {
+            $sortDirection = 'desc';
+        }
+        $query->orderBy($sortField, $sortDirection);
 
         $books = $query->paginate(12);
-        
-        // Get unique categories for the filter
-        $categories = Book::published()->distinct()->pluck('category');
 
-        return view('store.shop.index', compact('books', 'categories'));
+        return view('store.shop.index', [
+            'books' => $books,
+            'categories' => $categories,
+            'selectedCategory' => $selectedCategory,
+        ]);
     }
 
     /**
@@ -43,14 +52,11 @@ class ShopController extends Controller
     public function show($id)
     {
         $book = Book::published()->findOrFail($id);
-        
-        // Get related books in the same category
         $relatedBooks = Book::published()
-            ->where('category', $book->category)
+            ->where('category_id', $book->category_id)
             ->where('id', '!=', $book->id)
             ->limit(4)
             ->get();
-            
         return view('store.shop.show', compact('book', 'relatedBooks'));
     }
 }

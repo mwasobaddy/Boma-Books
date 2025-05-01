@@ -1,11 +1,59 @@
 <x-layouts.store>
     <div class="bg-gray-50 dark:bg-gray-900 py-8">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumb -->
+            <nav class="flex mb-8" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="{{ route('home') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200">
+                            Home
+                        </a>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            @if(isset($selectedCategory))
+                                <a href="{{ route('shop.index') }}" class="ml-1 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 md:ml-2">Shop</a>
+                            @else
+                                <span class="ml-1 text-gray-500 dark:text-gray-400 md:ml-2 font-medium">Shop</span>
+                            @endif
+                        </div>
+                    </li>
+                    @if(isset($selectedCategory))
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="ml-1 text-gray-500 dark:text-gray-400 md:ml-2 font-medium">{{ $selectedCategory->name }}</span>
+                            </div>
+                        </li>
+                    @endif
+                </ol>
+            </nav>
+
             <!-- Page Header -->
             <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Book Shop</h1>
-                    <p class="mt-1 text-gray-600 dark:text-gray-400">Browse our collection of books</p>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                        @if(isset($selectedCategory))
+                            {{ $selectedCategory->name }}
+                        @else
+                            Book Shop
+                        @endif
+                    </h1>
+                    <p class="mt-1 text-gray-600 dark:text-gray-400">
+                        @if(isset($selectedCategory) && $selectedCategory->description)
+                            {{ $selectedCategory->description }}
+                        @else
+                            Browse our collection of books
+                        @endif
+                    </p>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        {{ $books->total() }} {{ Str::plural('book', $books->total()) }} found
+                    </p>
                 </div>
                 <div class="mt-4 md:mt-0">
                     <div class="flex items-center space-x-4">
@@ -33,26 +81,22 @@
                 <!-- Sidebar for filters -->
                 <div class="w-full lg:w-1/4 mb-6 lg:mb-0 lg:pr-6">
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-                        <h2 class="font-semibold text-lg text-gray-900 dark:text-white mb-4">Filters</h2>
-                        
-                        <!-- Category filter -->
-                        <div class="mb-4">
-                            <h3 class="font-medium text-gray-800 dark:text-gray-200 mb-2">Categories</h3>
-                            <div class="space-y-2">
-                                <div>
-                                    <a href="{{ route('shop.index') }}" class="block text-sm {{ !request('category') ? 'text-orange-600 dark:text-orange-500 font-medium' : 'text-gray-700 dark:text-gray-300' }}">
-                                        All Categories
+                        <h2 class="font-semibold text-lg text-gray-900 dark:text-white mb-4">Categories</h2>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="{{ route('shop.index') }}" class="block text-sm px-3 py-2 rounded {{ !isset($selectedCategory) ? 'bg-orange-50 text-orange-600 dark:bg-gray-700 dark:text-orange-500 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                                    All Categories
+                                </a>
+                            </li>
+                            @foreach($categories as $cat)
+                                <li>
+                                    <a href="{{ route('categories.show', $cat->slug) }}" class="flex items-center justify-between block text-sm px-3 py-2 rounded {{ isset($selectedCategory) && $selectedCategory->id === $cat->id ? 'bg-orange-50 text-orange-600 dark:bg-gray-700 dark:text-orange-500 font-medium' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                                        <span>{{ $cat->name }}</span>
+                                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium px-2 py-0.5 rounded">{{ $cat->books_count }}</span>
                                     </a>
-                                </div>
-                                @foreach($categories as $category)
-                                    <div>
-                                        <a href="{{ route('shop.index', ['category' => $category]) }}" class="block text-sm {{ request('category') == $category ? 'text-orange-600 dark:text-orange-500 font-medium' : 'text-gray-700 dark:text-gray-300' }}">
-                                            {{ $category }}
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
 
@@ -69,7 +113,7 @@
                                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden flex flex-col">
                                     <a href="{{ route('shop.show', $book->id) }}" class="block">
                                         <div class="relative pb-2/3">
-                                            <img class="absolute h-full w-full object-cover" src="{{ $book->cover_image }}" alt="{{ $book->title }}">
+                                            <img class="absolute h-full w-full object-cover" src="{{ $book->cover_image ? asset('storage/' . $book->cover_image) : asset('images/default-book-cover.png') }}" alt="{{ $book->title }}">
                                             @if($book->is_featured)
                                                 <span class="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">Featured</span>
                                             @endif
@@ -81,9 +125,9 @@
                                     <div class="p-4 flex-1 flex flex-col">
                                         <div class="flex justify-between items-start">
                                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                                {{ $book->category }}
+                                                {{ $book->category->name ?? 'Uncategorized' }}
                                             </span>
-                                            <span class="text-orange-600 dark:text-orange-500 font-bold">{{ $book->formatted_price }}</span>
+                                            <span class="text-orange-600 dark:text-orange-500 font-bold">${{ number_format($book->price, 2) }}</span>
                                         </div>
                                         <a href="{{ route('shop.show', $book->id) }}" class="block mt-2">
                                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">{{ $book->title }}</h3>
@@ -92,7 +136,6 @@
                                         <p class="mt-2 text-gray-700 dark:text-gray-300 text-sm line-clamp-3 flex-grow">
                                             {{ \Illuminate\Support\Str::limit($book->description, 100) }}
                                         </p>
-                                        
                                         @if($book->stock > 0)
                                             <form action="{{ route('cart.add', $book->id) }}" method="POST" class="mt-4">
                                                 @csrf
@@ -118,7 +161,6 @@
                                 </div>
                             @endforeach
                         </div>
-
                         <!-- Pagination -->
                         <div class="mt-8">
                             {{ $books->appends(request()->query())->links() }}
@@ -128,19 +170,12 @@
             </div>
         </div>
     </div>
-
     <script>
         function updateSort(value) {
             const [sort, direction] = value.split('-');
-            
-            // Get current URL and query parameters
             const url = new URL(window.location);
-            
-            // Update or add the sort and direction parameters
             url.searchParams.set('sort', sort);
             url.searchParams.set('direction', direction);
-            
-            // Redirect to new URL with updated parameters
             window.location = url.toString();
         }
     </script>
