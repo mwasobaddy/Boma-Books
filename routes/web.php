@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('store.home');
@@ -25,6 +26,10 @@ Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 });
+
+// Contact routes
+Route::get('/contact', [ContactController::class, 'show'])->name('store.contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('store.contact.send');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
