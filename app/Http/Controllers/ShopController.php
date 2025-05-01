@@ -16,12 +16,10 @@ class ShopController extends Controller
         // Load all active categories for sidebar/filter
         $categories = Category::active()->withCount('books')->get();
 
-        // Determine if filtering by category (by slug)
-        $categorySlug = $request->route('category');
-        $selectedCategory = null;
+        // Use injected category model for filtering
+        $selectedCategory = $category;
         $query = Book::published();
-        if ($categorySlug) {
-            $selectedCategory = Category::where('slug', $categorySlug)->firstOrFail();
+        if ($selectedCategory) {
             $query->where('category_id', $selectedCategory->id);
         }
 

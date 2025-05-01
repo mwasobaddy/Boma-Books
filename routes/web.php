@@ -12,7 +12,7 @@ Route::get('/', function () {
 // Shop routes (unified with category)
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
-Route::get('/categories/{category}', [ShopController::class, 'index'])->name('categories.show');
+Route::get('/categories/{category:slug}', [ShopController::class, 'index'])->name('categories.show');
 
 // Cart routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
