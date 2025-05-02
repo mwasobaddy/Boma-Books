@@ -35,22 +35,11 @@
 
             <!-- Cart and Auth Links -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
+                <!-- Favorites Icon -->
+                <livewire:favorites.favorite-button />
+
                 <!-- Cart Icon -->
-                <a href="{{ route('cart.index') }}" class="relative p-2 mr-4 text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500 transition duration-150 ease-in-out group">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    @php
-                        $cart = session('cart', []);
-                        $cartCount = count($cart);
-                    @endphp
-                    @if($cartCount > 0)
-                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-orange-600 rounded-full">{{ $cartCount }}</span>
-                    @endif
-                    <span class="hidden group-hover:block absolute top-10 right-0 bg-white dark:bg-gray-700 rounded-md shadow-lg text-sm py-1 px-2 whitespace-nowrap">
-                        View Cart
-                    </span>
-                </a>
+                <livewire:cart.cart-button />
                 
                 @auth
                     <!-- User Dropdown -->
@@ -108,19 +97,17 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6m16 0a2 2 0 01-2 2H6a2 2 0 01-2-2m16 0V7m0 6v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6" /></svg>
             Shop
         </a>
+        <div class="flex flex-col items-center text-xs text-gray-600 dark:text-gray-300 relative">
+            <livewire:favorites.favorite-button />
+            <span class="mt-1">Favs</span>
+        </div>
+        <div class="flex flex-col items-center text-xs text-gray-600 dark:text-gray-300 relative">
+            <livewire:cart.cart-button />
+            <span class="mt-1">Cart</span>
+        </div>
         <a href="{{ route('store.contact') }}" class="flex flex-col items-center text-xs text-gray-600 dark:text-gray-300">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 01-8 0m8 0a4 4 0 00-8 0m8 0V8a4 4 0 00-8 0v4m8 0v4a4 4 0 01-8 0v-4" /></svg>
             Contact
-        </a>
-        <a href="{{ route('cart.index') }}" class="flex flex-col items-center text-xs text-gray-600 dark:text-gray-300 relative">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-            <span id="cart-count-mobile" class="absolute -top-1 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-orange-600 rounded-full" style="display:none;">0</span>
-            Cart
-        </a>
-        <a href="#" class="flex flex-col items-center text-xs text-gray-600 dark:text-gray-300 relative">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>
-            <span id="fav-count-mobile" class="absolute -top-1 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-pink-500 rounded-full" style="display:none;">0</span>
-            Favs
         </a>
     </div>
 </nav>
@@ -153,7 +140,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!window.Alpine) {
             // Simple toggle functionality if Alpine.js is not available
             const button = el.querySelector('button');
+            if (!button) return;
+            
             const content = button.nextElementSibling;
+            if (!content) return;
             
             button.addEventListener('click', function() {
                 const isOpen = content.style.display !== 'none';
@@ -161,39 +151,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Rotate arrow
                 const svg = button.querySelector('svg');
-                svg.style.transform = isOpen ? '' : 'rotate(180deg)';
+                if (svg) svg.style.transform = isOpen ? '' : 'rotate(180deg)';
             });
         }
     });
-
-    // Utility: Get cart/fav count from localStorage
-    function getLocalCount(key) {
-        try {
-            const items = JSON.parse(localStorage.getItem(key) || '[]');
-            return Array.isArray(items) ? items.length : 0;
-        } catch (e) { return 0; }
-    }
-    // Update cart/fav badges
-    function updateBadges() {
-        // Cart
-        const cartCount = getLocalCount('cart');
-        const cartBadge = document.getElementById('cart-count-mobile');
-        if (cartBadge) {
-            cartBadge.textContent = cartCount;
-            cartBadge.style.display = cartCount > 0 ? '' : 'none';
-        }
-        // Favourites
-        const favCount = getLocalCount('favourites');
-        const favBadge = document.getElementById('fav-count-mobile');
-        if (favBadge) {
-            favBadge.textContent = favCount;
-            favBadge.style.display = favCount > 0 ? '' : 'none';
-        }
-    }
-    // Initial update
-    updateBadges();
-    // Listen for custom events (trigger these when cart/favs change)
-    window.addEventListener('cart-updated', updateBadges);
-    window.addEventListener('favourites-updated', updateBadges);
 });
 </script>

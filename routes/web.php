@@ -5,6 +5,7 @@ use Livewire\Volt\Volt;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FavoriteController;
 
 Route::get('/', function () {
     return view('store.home');
@@ -17,15 +18,18 @@ Route::get('/categories/{category:slug}', [ShopController::class, 'index'])->nam
 
 // Cart routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-Route::patch('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/cart/add/{book}', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/cart/update/{cartItemId}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/remove/{cartItemId}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
-// Checkout routes - requires authentication
-Route::middleware(['auth'])->group(function () {
-    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
-});
+// Favorites routes
+Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+Route::post('/favorites/add/{book}', [FavoriteController::class, 'add'])->name('favorites.add');
+Route::delete('/favorites/remove/{book}', [FavoriteController::class, 'remove'])->name('favorites.remove');
+Route::post('/favorites/toggle/{book}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+Route::post('/favorites/clear', [FavoriteController::class, 'clear'])->name('favorites.clear');
 
 // Contact routes
 Route::get('/contact', [ContactController::class, 'show'])->name('store.contact');
