@@ -36,6 +36,9 @@ class CartController extends Controller
     {
         // Check if the book is in stock
         if ($book->stock <= 0) {
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Sorry, this book is out of stock.']);
+            }
             return redirect()->back()->with('error', 'Sorry, this book is out of stock.');
         }
 
@@ -45,10 +48,18 @@ class CartController extends Controller
         if ($quantity > $book->stock) {
             $quantity = $book->stock;
             $this->cartService->addToCart($book, $quantity);
+            
+            if ($request->expectsJson()) {
+                return response()->json(['success' => true, 'message' => "We've added the maximum available quantity to your cart."]);
+            }
             return redirect()->back()->with('warning', "We've added the maximum available quantity to your cart.");
         }
         
         $this->cartService->addToCart($book, $quantity);
+        
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Book has been added to your cart!']);
+        }
         return redirect()->back()->with('success', 'Book has been added to your cart!');
     }
 

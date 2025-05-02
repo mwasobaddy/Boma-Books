@@ -2,6 +2,7 @@
 
 use App\Services\CartService;
 use Livewire\Volt\Component;
+use Livewire\Attributes\On;
 
 new class extends Component {
     public $cartCount = 0;

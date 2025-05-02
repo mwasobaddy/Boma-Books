@@ -2,6 +2,7 @@
 
 use App\Services\CartService;
 use Livewire\Volt\Component;
+use Livewire\Attributes\On;
 use Illuminate\Support\Collection;
 
 new class extends Component {
@@ -127,7 +128,7 @@ new class extends Component {
                         <div class="flex justify-between items-center">
                             <button 
                                 wire:click="clearCart"
-                                class="text-sm text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500"
+                                class="text-sm text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors"
                             >
                                 Clear Cart
                             </button>

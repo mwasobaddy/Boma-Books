@@ -37,11 +37,13 @@ new class extends Component {
     }
 }; ?>
 
-<div>
+<div wire:ignore.self>
     @if($buttonStyle === 'icon')
         <!-- Heart icon button -->
         <button
+            type="button"
             wire:click="toggleFavorite"
+            wire:key="fav-{{ $book->id }}"
             class="rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-900 hover:text-red-500 dark:hover:text-red-400 p-2 transition-colors focus:outline-none {{ $isFavorited ? 'bg-red-100 dark:bg-red-900 text-red-500 dark:text-red-400' : '' }}"
             title="{{ $isFavorited ? 'Remove from favorites' : 'Add to favorites' }}"
         >
@@ -52,7 +54,9 @@ new class extends Component {
     @elseif($buttonStyle === 'primary')
         <!-- Primary button -->
         <button 
+            type="button"
             wire:click="toggleFavorite"
+            wire:key="fav-{{ $book->id }}"
             class="inline-flex items-center px-4 py-2 bg-{{ $isFavorited ? 'red' : 'gray' }}-600 hover:bg-{{ $isFavorited ? 'red' : 'gray' }}-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-{{ $isFavorited ? 'red' : 'gray' }}-500 transition-colors"
         >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="{{ $isFavorited ? '0' : '2' }}">
@@ -63,7 +67,9 @@ new class extends Component {
     @else
         <!-- Secondary button -->
         <button 
+            type="button"
             wire:click="toggleFavorite"
+            wire:key="fav-{{ $book->id }}"
             class="inline-flex items-center px-4 py-2 border border-{{ $isFavorited ? 'red' : 'gray' }}-300 text-{{ $isFavorited ? 'red' : 'gray' }}-700 dark:text-{{ $isFavorited ? 'red' : 'gray' }}-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-{{ $isFavorited ? 'red' : 'gray' }}-500 transition-colors"
         >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="{{ $isFavorited ? '0' : '2' }}">

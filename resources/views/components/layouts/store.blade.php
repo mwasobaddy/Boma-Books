@@ -17,17 +17,22 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
     <body class="font-sans antialiased bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white min-h-screen">
-        <!-- Navigation -->
-        <x-store.navbar />
+        <x-livewire.spa-mode>
+            <!-- Navigation -->
+            <x-store.navbar />
 
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
 
-        <!-- Footer -->
-        <x-store.footer />
+            <!-- Footer -->
+            <x-store.footer />
+        </x-livewire.spa-mode>
+        
+        @livewireScripts
     </body>
 </html>
