@@ -141,7 +141,7 @@
                                                 :key="'add-to-cart-shop-'.$book->id"
                                                 :book="$book"
                                                 buttonStyle="secondary"
-                                                showQuantity="false"
+                                                showQuantity="true"
                                             />
                                         @else
                                             <button disabled class="mt-4 w-full bg-gray-400 dark:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg cursor-not-allowed">

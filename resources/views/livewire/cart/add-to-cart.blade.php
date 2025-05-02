@@ -21,21 +21,37 @@ new #[PreserveScroll] class extends Component {
         $this->book = $book;
         $this->buttonStyle = $buttonStyle;
         $this->showQuantity = $showQuantity;
-        // initialize inCart state
-        $this->inCart = app(CartService::class)->getCartItems()->contains(fn($item) => $item->book->id === $this->book->id);
-    }
-    
-    public function decreaseQuantity()
-    {
-        if ($this->quantity > 1) {
-            $this->quantity--;
+        $cartService = app(CartService::class);
+        $cartItem = $cartService->getCartItems()->first(fn($item) => $item->book->id === $this->book->id);
+        $this->inCart = (bool) $cartItem;
+        if ($cartItem) {
+            $this->quantity = $cartItem->quantity;
         }
     }
-    
+
     public function increaseQuantity()
-    {
-        $this->quantity++;
+{
+    $this->quantity++;
+    $cartService = app(\App\Services\CartService::class);
+    $cartItem = $cartService->getCartItems()->first(fn($item) => $item->book->id === $this->book->id);
+    if ($cartItem) {
+        $cartService->updateCartItemQuantity($cartItem->id, $this->quantity);
+        $this->dispatch('cart-updated');
     }
+}
+
+public function decreaseQuantity()
+{
+    if ($this->quantity > 1) {
+        $this->quantity--;
+        $cartService = app(\App\Services\CartService::class);
+        $cartItem = $cartService->getCartItems()->first(fn($item) => $item->book->id === $this->book->id);
+        if ($cartItem) {
+            $cartService->updateCartItemQuantity($cartItem->id, $this->quantity);
+            $this->dispatch('cart-updated');
+        }
+    }
+}
     
     public function addToCart()
     {
