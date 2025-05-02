@@ -1,8 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 42" {{ $attributes }}>
-    <path 
-        fill="currentColor" 
-        fill-rule="evenodd" 
-        clip-rule="evenodd"
-        d="M17.2 5.633 8.6.855 0 5.633v26.51l16.2 9 16.2-9v-8.442l7.6-4.223V9.856l-8.6-4.777-8.6 4.777V18.3l-5.6 3.111V5.633ZM38 18.301l-5.6 3.11v-6.157l5.6-3.11V18.3Zm-1.06-7.856-5.54 3.078-5.54-3.079 5.54-3.078 5.54 3.079ZM24.8 18.3v-6.157l5.6 3.111v6.158L24.8 18.3Zm-1 1.732 5.54 3.078-13.14 7.302-5.54-3.078 13.14-7.3v-.002Zm-16.2 7.89 7.6 4.222V38.3L2 30.966V7.92l5.6 3.111v16.892ZM8.6 9.3 3.06 6.222 8.6 3.143l5.54 3.08L8.6 9.3Zm21.8 15.51-13.2 7.334V38.3l13.2-7.334v-6.156ZM9.6 11.034l5.6-3.11v14.6l-5.6 3.11v-14.6Z"
-    />
-</svg>
+<div class="flex flex-row items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9 4.804A1 1 0 0 1 10.43 4h5.14c.4 0 .75.27.871.646a1 1 0 0 1-.287 1.078l-3 2.5a1 1 0 0 1-1.278 0l-3-2.5A1 1 0 0 1 9 4.804z"></path>
+        <path d="M3 7.204A1 1 0 0 1 4.43 6.4h11.14c.4 0 .75.27.871.646a1 1 0 0 1-.287 1.078l-5.57 4.642a1 1 0 0 1-1.278 0L3.287 8.124A1 1 0 0 1 3 7.204z"></path>
+        <path d="M3 12.204a1 1 0 0 1 1.43-.804h11.14c.4 0 .75.27.871.646a1 1 0 0 1-.287 1.078l-5.57 4.642a1 1 0 0 1-1.278 0l-5.57-4.642A1 1 0 0 1 3 12.204z"></path>
+    </svg>
+    <span class="text-3xl font-bold text-gray-800 dark:text-gray-200">
+        <span class="text-orange-500">B</span><span class="text-gray-800 dark:text-gray-200 text-3xl">oma</span>
+        <span class="text-orange-500">Books</span>
+
+    </span>
+</div>
