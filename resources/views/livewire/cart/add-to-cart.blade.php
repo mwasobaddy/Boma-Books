@@ -30,33 +30,44 @@ new #[PreserveScroll] class extends Component {
     }
 
     public function increaseQuantity()
-{
-    $this->quantity++;
-    $cartService = app(\App\Services\CartService::class);
-    $cartItem = $cartService->getCartItems()->first(fn($item) => $item->book->id === $this->book->id);
-    if ($cartItem) {
-        $cartService->updateCartItemQuantity($cartItem->id, $this->quantity);
-        $this->dispatch('cart-updated');
-    }
-}
-
-public function decreaseQuantity()
-{
-    if ($this->quantity > 1) {
-        $this->quantity--;
+    {
+        $this->quantity++;
         $cartService = app(\App\Services\CartService::class);
         $cartItem = $cartService->getCartItems()->first(fn($item) => $item->book->id === $this->book->id);
         if ($cartItem) {
             $cartService->updateCartItemQuantity($cartItem->id, $this->quantity);
             $this->dispatch('cart-updated');
+            
+            // Show toast notification for quantity update
+            $this->dispatch('showSuccessToast', 
+                icon: 'success', 
+                title: 'Quantity updated to ' . $this->quantity
+            );
         }
     }
-}
+
+    public function decreaseQuantity()
+    {
+        if ($this->quantity > 1) {
+            $this->quantity--;
+            $cartService = app(\App\Services\CartService::class);
+            $cartItem = $cartService->getCartItems()->first(fn($item) => $item->book->id === $this->book->id);
+            if ($cartItem) {
+                $cartService->updateCartItemQuantity($cartItem->id, $this->quantity);
+                $this->dispatch('cart-updated');
+                
+                // Show toast notification for quantity update
+                $this->dispatch('showSuccessToast', 
+                    icon: 'info', 
+                    title: 'Quantity updated to ' . $this->quantity
+                );
+            }
+        }
+    }
     
     public function addToCart()
     {
         $this->processing = true;
-        $this->message = null;
         
         try {
             $cartService = app(CartService::class);
@@ -66,18 +77,36 @@ public function decreaseQuantity()
                 if ($item) {
                     $cartService->removeFromCart($item->id);
                     $this->inCart = false;
-                    $this->message = 'Book removed from cart!';
+                    
+                    // Show toast notification for removed item
+                    $this->dispatch('showToast', 
+                        icon: 'success', 
+                        title: 'Removed from Cart!',
+                        text: $this->book->title . ' has been removed from your cart.',
+                        timer: 3500
+                    );
                 }
             } else {
                 // add to cart
                 $cartService->addToCart($this->book, $this->quantity);
                 $this->inCart = true;
-                $this->message = 'Book added to cart successfully!';
+                
+                // Show toast notification for added item
+                $this->dispatch('showToast', 
+                    icon: 'success', 
+                    title: 'Added to Cart!', 
+                    text: $this->quantity . ' × ' . $this->book->title . ' has been added to your cart.',
+                    timer: 4500
+                );
             }
             $this->dispatch('cart-updated');
         } catch (\Exception $e) {
-            $this->message = $this->inCart ? 'Failed to remove from cart.' : 'Failed to add to cart.';
-            // exception during cart update
+            // Show error alert 
+            $this->dispatch('showAlert', 
+                icon: 'error', 
+                title: 'Oops!',
+                text: $this->inCart ? 'Failed to remove from cart.' : 'Failed to add to cart.'
+            );
         } finally {
             $this->processing = false;
         }
@@ -150,9 +179,31 @@ public function decreaseQuantity()
         {{ $inCart ? 'Remove from Cart' : 'Add to Cart' }}
     </button>
 
-    @if($message)
-        <p class="mt-2 text-sm {{ str_contains($message, 'success') ? 'text-green-600' : 'text-red-600' }}">
-            {{ $message }}
-        </p>
-    @endif
+    <script>
+        document.addEventListener('livewire:initialized', function() {
+            @this.on('showAlert', (params) => {
+                Swal.fire({
+                    icon: params.icon,
+                    title: params.title,
+                    text: params.text,
+                    imageUrl: params.imageUrl || null,
+                    imageWidth: params.imageWidth || null,
+                    imageHeight: params.imageHeight || null,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            });
+            
+            @this.on('showToast', (params) => {
+                Toast.fire({
+                    icon: params.icon,
+                    title: params.title,
+                    text: params.text || null,
+                    timer: params.timer || 3000,
+                    timerProgressBar: true
+                });
+            });
+        });
+    </script>
 </div>

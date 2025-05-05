@@ -35,6 +35,9 @@ Route::post('/favorites/clear', [FavoriteController::class, 'clear'])->name('fav
 Route::get('/contact', [ContactController::class, 'show'])->name('store.contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('store.contact.send');
 
+// SweetAlert2 demo route
+Route::view('sweetalert-demo', 'sweetalert-demo')->name('sweetalert-demo');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');

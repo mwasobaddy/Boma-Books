@@ -34,5 +34,46 @@
         </x-livewire.spa-mode>
         
         @livewireScripts
+        
+        <!-- Flash Messages -->
+        @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('success') }}",
+                    timer: 4000,
+                    timerProgressBar: true
+                });
+            });
+        </script>
+        @endif
+
+        @if (session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: "{{ session('error') }}",
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            });
+        </script>
+        @endif
+
+        @if (session('info'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Toast.fire({
+                    icon: 'info',
+                    title: "{{ session('info') }}",
+                    timer: 2500,
+                    timerProgressBar: true
+                });
+            });
+        </script>
+        @endif
     </body>
 </html>
