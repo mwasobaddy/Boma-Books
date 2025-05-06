@@ -37,22 +37,22 @@
                     <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider dark:text-gray-400">Quick Links</h3>
                     <ul class="mt-4 space-y-2">
                         <li>
-                            <a href="{{ route('home') }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500">
+                            <a href="{{ route('home') }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500" wire:navigate>
                                 Home
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('shop.index') }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500">
+                            <a href="{{ route('shop.index') }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500" wire:navigate>
                                 Shop
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500">
+                            <a href="#" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500" wire:navigate>
                                 About Us
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500">
+                            <a href="#" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500" wire:navigate>
                                 Contact
                             </a>
                         </li>
@@ -64,22 +64,22 @@
                     <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider dark:text-gray-400">Categories</h3>
                     <ul class="mt-4 space-y-2">
                         <li>
-                            <a href="{{ route('shop.index', ['category' => 'Fiction']) }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500">
+                            <a href="{{ route('shop.index', ['category' => 'Fiction']) }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500" wire:navigate>
                                 Fiction
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('shop.index', ['category' => 'Non-Fiction']) }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500">
+                            <a href="{{ route('shop.index', ['category' => 'Non-Fiction']) }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500" wire:navigate>
                                 Non-Fiction
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('shop.index', ['category' => 'Science Fiction']) }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500">
+                            <a href="{{ route('shop.index', ['category' => 'Science Fiction']) }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500" wire:navigate>
                                 Science Fiction
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('shop.index', ['category' => 'Mystery']) }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500">
+                            <a href="{{ route('shop.index', ['category' => 'Mystery']) }}" class="text-gray-600 hover:text-orange-600 dark:text-gray-400 dark:hover:text-orange-500" wire:navigate>
                                 Mystery
                             </a>
                         </li>

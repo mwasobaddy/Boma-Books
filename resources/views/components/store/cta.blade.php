@@ -32,7 +32,7 @@
                     @auth
                         <div class="text-center">
                             <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Welcome Back!</h3>
-                            <a href="#" class="w-full inline-flex items-center justify-center px-6 py-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-xl transition duration-150 ease-in-out shadow-md hover:shadow-lg group">
+                            <a href="{{ route('shop.index') }}" class="w-full inline-flex items-center justify-center px-6 py-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-xl transition duration-150 ease-in-out shadow-md hover:shadow-lg group" wire:navigate>
                                 Browse Collection
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -47,11 +47,11 @@
                                     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
                                     <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="youremail@example.com">
                                 </div>
-                                <a href="{{ route('register') }}" class="w-full inline-block text-center px-6 py-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-xl transition duration-150 ease-in-out shadow-md hover:shadow-lg">
+                                <a href="{{ route('register') }}" class="w-full inline-block text-center px-6 py-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-xl transition duration-150 ease-in-out shadow-md hover:shadow-lg" wire:navigate>
                                     Sign Up Now
                                 </a>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">
-                                    By signing up, you agree to our <a href="#" class="text-orange-600 hover:text-orange-700 dark:text-orange-400 underline">Terms</a> and <a href="#" class="text-orange-600 hover:text-orange-700 dark:text-orange-400 underline">Privacy Policy</a>
+                                    By signing up, you agree to our <a href="#" class="text-orange-600 hover:text-orange-700 dark:text-orange-400 underline" wire:navigate>Terms</a> and <a href="#" class="text-orange-600 hover:text-orange-700 dark:text-orange-400 underline" wire:navigate>Privacy Policy</a>
                                 </p>
                             </form>
                         </div>

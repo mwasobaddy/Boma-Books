@@ -5,7 +5,7 @@
             <nav class="flex mb-6 text-sm" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2">
                     <li class="inline-flex items-center">
-                        <a href="{{ route('home') }}" class="text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-200">
+                        <a href="{{ route('home') }}" class="flex text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-200" wire:navigate>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                             </svg>
@@ -18,7 +18,7 @@
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             @if(isset($selectedCategory))
-                                <a href="{{ route('shop.index') }}" class="ml-1 text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-200 md:ml-2">Shop</a>
+                                <a href="{{ route('shop.index') }}" class="ml-1 text-gray-500 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-200 md:ml-2" wire:navigate>Shop</a>
                             @else
                                 <span class="ml-1 text-gray-700 dark:text-gray-300 md:ml-2 font-medium">Shop</span>
                             @endif
@@ -108,7 +108,8 @@
                                         <a href="{{ route('shop.index') }}" 
                                            class="flex items-center px-4 py-3 text-sm rounded-lg transition-colors duration-150 {{ !isset($selectedCategory) 
                                             ? 'bg-orange-50 text-orange-600 dark:bg-gray-700 dark:text-orange-400 font-medium' 
-                                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
+                                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' }}"
+                                            wire:navigate>
                                             <span class="flex-1">All Categories</span>
                                             <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium px-2.5 py-0.5 rounded-full">{{ $books->total() }}</span>
                                         </a>
@@ -118,7 +119,8 @@
                                             <a href="{{ route('categories.show', $cat->slug) }}" 
                                                class="flex items-center justify-between px-4 py-3 text-sm rounded-lg transition-colors duration-150 {{ isset($selectedCategory) && $selectedCategory->id === $cat->id 
                                                 ? 'bg-orange-50 text-orange-600 dark:bg-gray-700 dark:text-orange-400 font-medium' 
-                                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
+                                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' }}"
+                                                wire:navigate>
                                                 <span>{{ $cat->name }}</span>
                                                 <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium px-2.5 py-0.5 rounded-full">{{ $cat->books_count }}</span>
                                             </a>
@@ -141,7 +143,7 @@
                             </div>
                             <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">No books found</h3>
                             <p class="text-gray-600 dark:text-gray-400 max-w-md mx-auto">Try adjusting your filters or check back later for new releases.</p>
-                            <a href="{{ route('shop.index') }}" class="mt-6 inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
+                            <a href="{{ route('shop.index') }}" class="mt-6 inline-flex items-center px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200" wire:navigate>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                 </svg>
@@ -152,7 +154,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                             @foreach($books as $book)
                                 <div class="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col transition-all duration-300 transform hover:-translate-y-1">
-                                    <a href="{{ route('shop.show', $book->id) }}" class="block relative overflow-hidden">
+                                    <a href="{{ route('shop.show', $book->id) }}" class="block relative overflow-hidden" wire:navigate>
                                         <div class="relative pb-[140%]"> <!-- 7:10 aspect ratio for books -->
                                             <img class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" 
                                                  src="{{ $book->cover_image ? asset('storage/' . $book->cover_image) : asset('images/default-book-cover.png') }}" 
@@ -187,7 +189,7 @@
                                             </span>
                                             <span class="text-orange-600 dark:text-orange-400 font-bold">${{ number_format($book->price, 2) }}</span>
                                         </div>
-                                        <a href="{{ route('shop.show', $book->id) }}" class="block">
+                                        <a href="{{ route('shop.show', $book->id) }}" class="block" wire:navigate>
                                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2 mb-1 hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-200">{{ $book->title }}</h3>
                                         </a>
                                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">By {{ $book->author }}</p>

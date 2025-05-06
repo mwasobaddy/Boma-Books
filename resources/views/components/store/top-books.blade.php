@@ -71,7 +71,7 @@
                 
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     @foreach(['Fiction', 'Non-Fiction', 'Biography', 'Science', 'Fantasy', 'Romance'] as $category)
-                        <a href="#" class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-colors duration-300 group">
+                        <a href="{{ route('shop.index', ['category' => $category]) }}" class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-orange-50 dark:hover:bg-orange-900/20 transition-colors duration-300 group" wire:navigate>
                             <span class="font-medium text-gray-800 dark:text-gray-200 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">{{ $category }}</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-colors" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -106,7 +106,7 @@
 
         <!-- Browse All Books Button -->
         <div class="mt-12 text-center" x-data="{show: false}" x-intersect="show = true" x-bind:class="{'opacity-100 translate-y-0': show, 'opacity-0 translate-y-4': !show}" class="transition-all duration-700 ease-out delay-500">
-            <a href="#" class="inline-flex items-center px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-medium text-lg rounded-xl shadow-lg hover:bg-gray-800 dark:hover:bg-gray-100 transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-500/20 dark:focus:ring-white/20">
+            <a href="{{ route('shop.index') }}" class="inline-flex items-center px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-medium text-lg rounded-xl shadow-lg hover:bg-gray-800 dark:hover:bg-gray-100 transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-500/20 dark:focus:ring-white/20" wire:navigate>
                 Browse All Books
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />

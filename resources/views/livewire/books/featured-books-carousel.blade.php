@@ -209,11 +209,6 @@ new class extends Component {
                                                             :book="$book" 
                                                             :show-quantity="false"
                                                         />
-                                                        <button class="flex-shrink-0 group-hover:bg-gray-100 dark:group-hover:bg-gray-700 p-2 rounded-full transition-colors ease-in-out" title="Add to Wishlist">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                            </svg>
-                                                        </button>
                                                     @else
                                                         <button disabled class="flex-grow bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium py-2 px-4 rounded-lg cursor-not-allowed flex items-center justify-center">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -286,7 +281,7 @@ new class extends Component {
     
     <!-- Browse All Books Button -->
     <div class="relative pb-10 text-center">
-        <a href="{{ route('shop.index') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-br from-orange-500 to-pink-600 text-white font-medium rounded-lg shadow-md hover:from-orange-600 hover:to-pink-700 focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-800 transition-all duration-300 transform hover:-translate-y-0.5">
+        <a href="{{ route('shop.index') }}" class="inline-flex items-center px-6 py-3 bg-gradient-to-br from-orange-500 to-pink-600 text-white font-medium rounded-lg shadow-md hover:from-orange-600 hover:to-pink-700 focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-800 transition-all duration-300 transform hover:-translate-y-0.5" wire:navigate>
             Browse All Books
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />

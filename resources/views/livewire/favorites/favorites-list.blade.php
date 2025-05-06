@@ -70,7 +70,7 @@ new class extends Component {
                     </div>
                     
                     <div class="p-4 flex-grow flex flex-col">
-                        <a href="{{ route('shop.show', $favorite->book->id) }}" class="text-lg font-semibold text-gray-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400 transition-colors">
+                        <a href="{{ route('shop.show', $favorite->book->id) }}" class="text-lg font-semibold text-gray-900 dark:text-white hover:text-orange-600 dark:hover:text-orange-400 transition-colors" wire:navigate>
                             {{ $favorite->book->title }}
                         </a>
                         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -97,7 +97,7 @@ new class extends Component {
             <p class="text-gray-500 dark:text-gray-400 text-center mb-6">
                 Add books to your favorites list to keep track of books you're interested in.
             </p>
-            <a href="{{ route('shop.index') }}" class="py-2 px-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-md transition-colors inline-flex items-center gap-2">
+            <a href="{{ route('shop.index') }}" class="py-2 px-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-md transition-colors inline-flex items-center gap-2" wire:navigate>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>

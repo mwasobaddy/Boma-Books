@@ -93,7 +93,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         </h4>
         <p class="text-xs text-gray-600 dark:text-gray-400">
             {{ __('If you don\'t receive an email within a few minutes, check your spam folder or') }}
-            <a href="#" class="text-orange-600 dark:text-orange-400 hover:underline">{{ __('contact support') }}</a>.
+            <a href="{{ route('store.contact') }}" class="text-orange-600 dark:text-orange-400 hover:underline" wire:navigate>{{ __('contact support') }}</a>.
         </p>
     </div>
 

@@ -6,7 +6,7 @@
             <div class="flex items-center">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('home') }}" class="text-xl font-bold text-orange-600 dark:text-orange-500">
+                    <a href="{{ route('home') }}" class="text-xl font-bold text-orange-600 dark:text-orange-500" wire:navigate>
                         <span class="inline-flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M9 4.804A1 1 0 0 1 10.43 4h5.14c.4 0 .75.27.871.646a1 1 0 0 1-.287 1.078l-3 2.5a1 1 0 0 1-1.278 0l-3-2.5A1 1 0 0 1 9 4.804z"/>
@@ -20,14 +20,14 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 ml-10 sm:flex">
-                    <a href="{{ route('home') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('home') ? 'border-orange-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
+                    <a href="{{ route('home') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('home') ? 'border-orange-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400' }} text-sm font-medium leading-5 transition duration-150 ease-in-out" wire:navigate>
                         Home
                     </a>
-                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('shop.index') || request()->routeIs('shop.show') ? 'border-orange-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400' }} text-sm font-medium leading-5 transition duration-150 ease-in-out">
+                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('shop.index') || request()->routeIs('shop.show') ? 'border-orange-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400' }} text-sm font-medium leading-5 transition duration-150 ease-in-out" wire:navigate>
                         Shop
                     </a>
                     
-                    <a href="{{ route('store.contact') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400 transition duration-150 ease-in-out">
+                    <a href="{{ route('store.contact') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-700 hover:text-gray-900 hover:border-orange-500 dark:text-gray-200 dark:hover:text-white dark:hover:border-orange-400 transition duration-150 ease-in-out" wire:navigate>
                         Contact
                     </a>
                 </div>
@@ -53,8 +53,8 @@
 
                         <!-- Dropdown Menu (Hidden by default) -->
                         <div class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                            <a href="{{ url('/dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Dashboard</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">My Orders</a>
+                            <a href="{{ url('/dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" wire:navigate>Dashboard</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem" wire:navigate>My Orders</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Log Out</button>
@@ -63,11 +63,11 @@
                     </div>
                 @else
                     <div class="space-x-4">
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" wire:navigate>
                             Log in
                         </a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                            <a href="{{ route('register') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" wire:navigate>
                                 Register
                             </a>
                         @endif
@@ -89,11 +89,11 @@
 
     <!-- Mobile menu, show/hide based on menu state. -->
     <div class="sm:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-inner border-t border-gray-200 dark:border-gray-700 flex justify-around py-2 z-50" id="mobile-menu-icons">
-        <a href="{{ route('home') }}" class="flex flex-col items-center text-xs {{ request()->routeIs('home') ? 'text-orange-600' : 'text-gray-600 dark:text-gray-300' }}">
+        <a href="{{ route('home') }}" class="flex flex-col items-center text-xs {{ request()->routeIs('home') ? 'text-orange-600' : 'text-gray-600 dark:text-gray-300' }}" wire:navigate>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m4-8v8m5 0h2a2 2 0 002-2V7a2 2 0 00-2-2h-3.5" /></svg>
             Home
         </a>
-        <a href="{{ route('shop.index') }}" class="flex flex-col items-center text-xs {{ request()->routeIs('shop.index') || request()->routeIs('shop.show') ? 'text-orange-600' : 'text-gray-600 dark:text-gray-300' }}">
+        <a href="{{ route('shop.index') }}" class="flex flex-col items-center text-xs {{ request()->routeIs('shop.index') || request()->routeIs('shop.show') ? 'text-orange-600' : 'text-gray-600 dark:text-gray-300' }}" wire:navigate>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6m16 0a2 2 0 01-2 2H6a2 2 0 01-2-2m16 0V7m0 6v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6" /></svg>
             Shop
         </a>
@@ -105,7 +105,7 @@
             <livewire:cart.cart-button />
             <span class="mt-1">Cart</span>
         </div>
-        <a href="{{ route('store.contact') }}" class="flex flex-col items-center text-xs text-gray-600 dark:text-gray-300">
+        <a href="{{ route('store.contact') }}" class="flex flex-col items-center text-xs text-gray-600 dark:text-gray-300" wire:navigate>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 01-8 0m8 0a4 4 0 00-8 0m8 0V8a4 4 0 00-8 0v4m8 0v4a4 4 0 01-8 0v-4" /></svg>
             Contact
         </a>

@@ -2,6 +2,7 @@
 
 use App\Models\Book;
 use App\Services\CartService;
+use App\Services\FavoriteService;
 use Livewire\Volt\Component;
 use Livewire\Attributes\Reactive;
 use Livewire\Attributes\PreserveScroll;
@@ -11,6 +12,7 @@ new #[PreserveScroll] class extends Component {
     public Book $book;
     public int $quantity = 1;
     public bool $inCart = false;
+    public bool $inFavorites = false;
     public string $buttonStyle = 'primary'; // primary or secondary
     public bool $showQuantity = true;
     public bool $processing = false;
@@ -27,6 +29,12 @@ new #[PreserveScroll] class extends Component {
         if ($cartItem) {
             $this->quantity = $cartItem->quantity;
         }
+        
+        // Check if book is in favorites
+        if (auth()->check()) {
+            $favoriteService = app(FavoriteService::class);
+            $this->inFavorites = $favoriteService->isFavorite(auth()->id(), $this->book->id);
+        }
     }
 
     public function increaseQuantity()
@@ -39,9 +47,10 @@ new #[PreserveScroll] class extends Component {
             $this->dispatch('cart-updated');
             
             // Show toast notification for quantity update
-            $this->dispatch('showSuccessToast', 
+            $this->dispatch('showToast', 
                 icon: 'success', 
-                title: 'Quantity updated to ' . $this->quantity
+                title: 'Quantity updated to ' . $this->quantity,
+                timer: 2000
             );
         }
     }
@@ -57,9 +66,10 @@ new #[PreserveScroll] class extends Component {
                 $this->dispatch('cart-updated');
                 
                 // Show toast notification for quantity update
-                $this->dispatch('showSuccessToast', 
+                $this->dispatch('showToast', 
                     icon: 'info', 
-                    title: 'Quantity updated to ' . $this->quantity
+                    title: 'Quantity updated to ' . $this->quantity,
+                    timer: 2000
                 );
             }
         }
@@ -112,15 +122,73 @@ new #[PreserveScroll] class extends Component {
         }
     }
     
+    public function toggleFavorite()
+    {
+        if (!auth()->check()) {
+            // User not logged in, redirect to login
+            return redirect()->route('login')->with('message', 'Please login to add items to favorites.');
+        }
+        
+        try {
+            $favoriteService = app(FavoriteService::class);
+            
+            if ($this->inFavorites) {
+                // Remove from favorites
+                $favoriteService->removeFavorite(auth()->id(), $this->book->id);
+                $this->inFavorites = false;
+                
+                // Show toast notification
+                $this->dispatch('showToast', 
+                    icon: 'success', 
+                    title: 'Removed from Favorites',
+                    text: $this->book->title . ' has been removed from your favorites.',
+                    timer: 3000
+                );
+            } else {
+                // Add to favorites
+                $favoriteService->addFavorite(auth()->id(), $this->book->id);
+                $this->inFavorites = true;
+                
+                // Show toast notification
+                $this->dispatch('showToast', 
+                    icon: 'success', 
+                    title: 'Added to Favorites!',
+                    text: $this->book->title . ' has been added to your favorites.',
+                    timer: 3000
+                );
+            }
+            
+            // Dispatch event to notify other components
+            $this->dispatch('favorites-updated');
+            
+        } catch (\Exception $e) {
+            // Show error alert
+            $this->dispatch('showAlert', 
+                icon: 'error', 
+                title: 'Oops!',
+                text: 'Failed to update favorites. Please try again.'
+            );
+        }
+    }
+    
     #[On('cart-updated')]
     public function handleCartUpdated()
     {
         $this->inCart = app(CartService::class)->getCartItems()->contains(fn($item) => $item->book->id === $this->book->id);
     }
+    
+    #[On('favorites-updated')]
+    public function handleFavoritesUpdated()
+    {
+        if (auth()->check()) {
+            $favoriteService = app(FavoriteService::class);
+            $this->inFavorites = $favoriteService->isFavorite(auth()->id(), $this->book->id);
+        }
+    }
 }; ?>
 
 <div class="flex flex-col gap-3">
-    @if($showQuantity)
+    @if($showQuantity && $inCart)
         <div class="flex items-center mt-2">
             <label for="quantity-{{ $book->id }}" class="mr-3 text-sm font-medium text-gray-700 dark:text-gray-300">Quantity:</label>
             <div class="flex items-center">
@@ -157,6 +225,38 @@ new #[PreserveScroll] class extends Component {
         </div>
     @endif
 
+    <div class="flex gap-2">
+        <!-- View Button -->
+        <a 
+            href="{{ route('shop.show', $book->id) }}"
+            class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 dark:bg-blue-700 hover:bg-blue-600 dark:hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            wire:navigate
+            wire:loading.attr="disabled"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            View
+        </a>
+
+        <!-- Favorite Button -->
+        <button 
+            wire:click="toggleFavorite"
+            wire:key="favorite-{{ $book->id }}"
+            class="flex-1 inline-flex justify-center items-center px-4 py-2 border text-sm font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+                {{ $inFavorites 
+                    ? 'border-transparent text-white bg-pink-500 dark:bg-pink-600 hover:bg-pink-600 dark:hover:bg-pink-700 focus:ring-pink-500'
+                    : 'border-transparent text-gray-700 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 focus:ring-gray-300' }}"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="{{ $inFavorites ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            {{ $inFavorites ? 'Saved' : 'Save' }}
+        </button>
+    </div>
+
+    <!-- Add to Cart Button -->
     <button 
         wire:click="addToCart"
         wire:loading.class="opacity-75" 

@@ -90,14 +90,14 @@
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Order Summary</h2>
                         
                         <div class="space-y-4">
-                            @foreach($books as $book)
+                            @foreach($cartItems as $cartItem)
                                 <div class="flex items-start">
-                                    <img class="w-12 h-16 object-cover mr-4" src="{{ $book->cover_image }}" alt="{{ $book->title }}">
+                                    <img class="w-12 h-16 object-cover mr-4" src="{{ $cartItem->book->cover_image }}" alt="{{ $cartItem->book->title }}">
                                     <div class="flex-1">
-                                        <h4 class="text-sm font-medium text-gray-900 dark:text-white">{{ $book->title }}</h4>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400">Qty: {{ $book->quantity }}</p>
+                                        <h4 class="text-sm font-medium text-gray-900 dark:text-white">{{ $cartItem->book->title }}</h4>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">Qty: {{ $cartItem->quantity }}</p>
                                     </div>
-                                    <span class="text-sm text-gray-900 dark:text-white">${{ number_format($book->price * $book->quantity, 2) }}</span>
+                                    <span class="text-sm text-gray-900 dark:text-white">${{ number_format($cartItem->book->price * $cartItem->quantity, 2) }}</span>
                                 </div>
                             @endforeach
                         </div>
@@ -124,7 +124,7 @@
                         </div>
 
                         <div class="mt-6">
-                            <a href="{{ route('cart.index') }}" class="text-sm text-orange-600 dark:text-orange-500 hover:underline flex items-center">
+                            <a href="{{ route('cart.index') }}" class="text-sm text-orange-600 dark:text-orange-500 hover:underline flex items-center" wire:navigate>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                 </svg>

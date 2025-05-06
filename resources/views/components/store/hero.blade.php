@@ -13,13 +13,13 @@
                     Explore our vast collection of books for every taste. From bestselling fiction to thought-provoking non-fiction.
                 </p>
                 <div class="mt-8 md:mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                    <a href="#" class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-medium text-base md:text-lg rounded-lg shadow-md transition duration-150 ease-in-out inline-flex items-center justify-center">
+                    <a href="{{ route('shop.index') }}" class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-medium text-base md:text-lg rounded-lg shadow-md transition duration-150 ease-in-out inline-flex items-center justify-center" wire:navigate>
                         Browse Collection
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
                     </a>
-                    <a href="#" class="px-6 py-3 border border-orange-600 dark:border-orange-500 text-orange-600 dark:text-orange-500 hover:bg-orange-50 dark:hover:bg-gray-800 font-medium text-base md:text-lg rounded-lg inline-flex items-center justify-center transition duration-150 ease-in-out">
+                    <a href="{{ route('store.contact') }}" class="px-6 py-3 border border-orange-600 dark:border-orange-500 text-orange-600 dark:text-orange-500 hover:bg-orange-50 dark:hover:bg-gray-800 font-medium text-base md:text-lg rounded-lg inline-flex items-center justify-center transition duration-150 ease-in-out" wire:navigate>
                         Learn More
                     </a>
                 </div>

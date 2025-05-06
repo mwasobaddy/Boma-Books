@@ -149,7 +149,7 @@
                 icon: 'error',
                 title: 'Error!',
                 text: 'Something went wrong',
-                footer: '<a href="#">Need help?</a>'
+                footer: '<a href="{{ route('store.contact') }}">Need help?</a>'
             });
         }
         

@@ -108,7 +108,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             <div class="ml-3 text-sm">
                 <label for="terms" class="font-light text-gray-500 dark:text-gray-300">
                     {{ __('I accept the') }}
-                    <a class="font-medium text-orange-600 hover:underline dark:text-orange-500" href="#">
+                    <a class="font-medium text-orange-600 hover:underline dark:text-orange-500" href="#" wire:navigate>
                         {{ __('Terms and Conditions') }}
                     </a>
                 </label>

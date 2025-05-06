@@ -108,7 +108,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             <li>{{ __('Check your spam or junk mail folder') }}</li>
             <li>{{ __('Make sure you\'ve entered the correct email address') }}</li>
             <li>{{ __('Try resending the verification email') }}</li>
-            <li>{{ __('If problems persist,') }} <a href="#" class="text-orange-600 dark:text-orange-400 hover:underline">{{ __('contact support') }}</a></li>
+            <li>{{ __('If problems persist,') }} <a href="{{ route('store.contact') }}" class="text-orange-600 dark:text-orange-400 hover:underline" wire:navigate>{{ __('contact support') }}</a></li>
         </ul>
     </div>
 

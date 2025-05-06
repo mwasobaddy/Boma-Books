@@ -132,7 +132,7 @@ new class extends Component {
                             >
                                 Clear Cart
                             </button>
-                            <a href="{{ route('shop.index') }}" class="flex items-center text-orange-600 dark:text-orange-500 hover:underline">
+                            <a href="{{ route('shop.index') }}" class="flex items-center text-orange-600 dark:text-orange-500 hover:underline" wire:navigate>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                 </svg>
@@ -166,7 +166,7 @@ new class extends Component {
                     </div>
 
                     <div class="mt-8">
-                        <a href="{{ route('cart.checkout') }}" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-4 rounded-lg transition duration-150 ease-in-out flex items-center justify-center">
+                        <a href="{{ route('cart.checkout') }}" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-3 px-4 rounded-lg transition duration-150 ease-in-out flex items-center justify-center" wire:navigate>
                             Proceed to Checkout
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -184,7 +184,7 @@ new class extends Component {
             </svg>
             <h2 class="mt-4 text-xl font-bold text-gray-900 dark:text-white">Your cart is empty</h2>
             <p class="mt-2 text-gray-600 dark:text-gray-400">Looks like you haven't added any books to your cart yet.</p>
-            <a href="{{ route('shop.index') }}" class="mt-6 inline-block bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-6 rounded-lg transition duration-150 ease-in-out">
+            <a href="{{ route('shop.index') }}" class="mt-6 inline-block bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-6 rounded-lg transition duration-150 ease-in-out" wire:navigate>
                 Browse Books
             </a>
         </div>
