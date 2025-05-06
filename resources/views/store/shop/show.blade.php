@@ -64,7 +64,11 @@
                         <div class="mb-6">
                             <div class="flex flex-wrap items-center gap-2 mb-3">
                                 <span class="inline-flex items-center bg-blue-50 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 text-xs font-medium px-2.5 py-1 rounded-md">
-                                    {{ $book->category }}
+                                    @if(is_object($book->category))
+                                        {{ $book->category->name }}
+                                    @else
+                                        {{ $book->category }}
+                                    @endif
                                 </span>
                                 
                                 <!-- Additional badges could go here -->
@@ -147,7 +151,13 @@
                                 <!-- Additional book metadata could be added here -->
                                 <div class="flex items-center text-sm">
                                     <span class="text-gray-500 dark:text-gray-400 min-w-32">Category:</span>
-                                    <span class="text-gray-900 dark:text-white font-medium">{{ $book->category }}</span>
+                                    <span class="text-gray-900 dark:text-white font-medium">
+                                        @if(is_object($book->category))
+                                            {{ $book->category->name }}
+                                        @else
+                                            {{ $book->category }}
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
                         </div>

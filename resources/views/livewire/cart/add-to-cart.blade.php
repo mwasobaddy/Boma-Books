@@ -7,6 +7,7 @@ use Livewire\Volt\Component;
 use Livewire\Attributes\Reactive;
 use Livewire\Attributes\PreserveScroll;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Route;
 
 new #[PreserveScroll] class extends Component {
     public Book $book;
@@ -17,6 +18,8 @@ new #[PreserveScroll] class extends Component {
     public bool $showQuantity = true;
     public bool $processing = false;
     public ?string $message = null;
+    public bool $isDetailPage = false;
+    public bool $isFavouritePage = false;
     
     public function mount(Book $book, string $buttonStyle = 'primary', bool $showQuantity = true)
     {
@@ -33,6 +36,11 @@ new #[PreserveScroll] class extends Component {
         // Check if book is in favorites (for both guests and authenticated users)
         $favoriteService = app(FavoriteService::class);
         $this->inFavorites = $favoriteService->isInFavorites($this->book);
+        
+        // Check if we're on the book detail page
+        $currentRoute = Route::currentRouteName();
+        $this->isDetailPage = $currentRoute === 'shop.show';
+        $this->isFavouritePage = $currentRoute === 'favorites.index'; // Added check for favorites page
     }
 
     public function increaseQuantity()
@@ -178,7 +186,7 @@ new #[PreserveScroll] class extends Component {
     }
 }; ?>
 
-<div class="flex flex-col gap-3">
+<div class="flex flex-col gap-3 w-full">
     @if($showQuantity && $inCart)
         <div class="flex items-center mt-2">
             <label for="quantity-{{ $book->id }}" class="mr-3 text-sm font-medium text-gray-700 dark:text-gray-300">Quantity:</label>
@@ -217,7 +225,8 @@ new #[PreserveScroll] class extends Component {
     @endif
 
     <div class="flex gap-2">
-        <!-- View Button -->
+        <!-- View Button - hidden on detail page -->
+        @unless($isDetailPage)
         <a 
             href="{{ route('shop.show', $book->id) }}"
             class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 dark:bg-blue-700 hover:bg-blue-600 dark:hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -230,7 +239,9 @@ new #[PreserveScroll] class extends Component {
             </svg>
             View
         </a>
+        @endunless
 
+        @unless ($isFavouritePage)
         <!-- Favorite Button -->
         <button 
             wire:click="toggleFavorite"
@@ -245,6 +256,7 @@ new #[PreserveScroll] class extends Component {
             </svg>
             {{ $inFavorites ? 'Saved' : 'Save' }}
         </button>
+        @endunless
     </div>
 
     <!-- Add to Cart Button -->
