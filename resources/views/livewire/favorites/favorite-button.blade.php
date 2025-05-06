@@ -2,6 +2,7 @@
 
 use App\Services\FavoriteService;
 use Livewire\Volt\Component;
+use Livewire\Attributes\On;
 
 new class extends Component {
     public $favoritesCount = 0;

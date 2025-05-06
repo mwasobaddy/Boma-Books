@@ -21,12 +21,6 @@ new class extends Component {
         $this->checkIfFavorited();
     }
     
-    #[Computed]
-    public function requiresLogin()
-    {
-        return !Auth::check() && env('REQUIRE_LOGIN_TO_FAVORITE', false);
-    }
-    
     public function checkIfFavorited()
     {
         $favoriteService = app(FavoriteService::class);
@@ -35,13 +29,6 @@ new class extends Component {
     
     public function toggleFavorite()
     {
-        if ($this->requiresLogin) {
-            // Store the intended URL for redirection after login
-            Session::put('url.intended', url()->current());
-            $this->redirect(route('login'));
-            return;
-        }
-        
         $this->loading = true;
         
         try {

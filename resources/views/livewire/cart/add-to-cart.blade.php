@@ -30,11 +30,9 @@ new #[PreserveScroll] class extends Component {
             $this->quantity = $cartItem->quantity;
         }
         
-        // Check if book is in favorites
-        if (auth()->check()) {
-            $favoriteService = app(FavoriteService::class);
-            $this->inFavorites = $favoriteService->isFavorite(auth()->id(), $this->book->id);
-        }
+        // Check if book is in favorites (for both guests and authenticated users)
+        $favoriteService = app(FavoriteService::class);
+        $this->inFavorites = $favoriteService->isInFavorites($this->book);
     }
 
     public function increaseQuantity()
@@ -124,17 +122,12 @@ new #[PreserveScroll] class extends Component {
     
     public function toggleFavorite()
     {
-        if (!auth()->check()) {
-            // User not logged in, redirect to login
-            return redirect()->route('login')->with('message', 'Please login to add items to favorites.');
-        }
-        
         try {
             $favoriteService = app(FavoriteService::class);
             
             if ($this->inFavorites) {
                 // Remove from favorites
-                $favoriteService->removeFavorite(auth()->id(), $this->book->id);
+                $favoriteService->removeFromFavorites($this->book);
                 $this->inFavorites = false;
                 
                 // Show toast notification
@@ -146,7 +139,7 @@ new #[PreserveScroll] class extends Component {
                 );
             } else {
                 // Add to favorites
-                $favoriteService->addFavorite(auth()->id(), $this->book->id);
+                $favoriteService->addToFavorites($this->book);
                 $this->inFavorites = true;
                 
                 // Show toast notification
@@ -158,7 +151,7 @@ new #[PreserveScroll] class extends Component {
                 );
             }
             
-            // Dispatch event to notify other components
+            // Broadcast the event to all components
             $this->dispatch('favorites-updated');
             
         } catch (\Exception $e) {
@@ -180,10 +173,8 @@ new #[PreserveScroll] class extends Component {
     #[On('favorites-updated')]
     public function handleFavoritesUpdated()
     {
-        if (auth()->check()) {
-            $favoriteService = app(FavoriteService::class);
-            $this->inFavorites = $favoriteService->isFavorite(auth()->id(), $this->book->id);
-        }
+        $favoriteService = app(FavoriteService::class);
+        $this->inFavorites = $favoriteService->isInFavorites($this->book);
     }
 }; ?>
 
@@ -244,10 +235,10 @@ new #[PreserveScroll] class extends Component {
         <button 
             wire:click="toggleFavorite"
             wire:key="favorite-{{ $book->id }}"
-            class="flex-1 inline-flex justify-center items-center px-4 py-2 border text-sm font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
+            class="flex-1 inline-flex justify-center items-center px-4 py-2 border text-sm font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500
                 {{ $inFavorites 
-                    ? 'border-transparent text-white bg-pink-500 dark:bg-pink-600 hover:bg-pink-600 dark:hover:bg-pink-700 focus:ring-pink-500'
-                    : 'border-transparent text-gray-700 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 focus:ring-gray-300' }}"
+                    ? 'border-pink-500 text-pink-700 dark:text-pink-300 bg-pink-50 dark:bg-pink-900/20 hover:bg-pink-100 dark:hover:bg-pink-900/30' 
+                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600' }}"
         >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1.5" fill="{{ $inFavorites ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />

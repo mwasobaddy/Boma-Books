@@ -92,7 +92,7 @@
             <div class="flex flex-col lg:flex-row gap-8">
                 <!-- Sidebar for filters - Enhanced with better visual hierarchy -->
                 <div class="w-full lg:w-1/4 flex-shrink-0">
-                    <div class="sticky top-6">
+                    <div class="sticky top-20">
                         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                             <div class="p-5 border-b border-gray-100 dark:border-gray-700">
                                 <h2 class="font-semibold text-lg text-gray-900 dark:text-white flex items-center">
